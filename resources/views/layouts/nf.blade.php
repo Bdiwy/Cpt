@@ -13,7 +13,7 @@
                         <img src="{{asset('img/logo.png')}}" alt="logo">
                     </div>
                     <div class="col-6 align-self-center text-right " >
-                        <a href="#" class="text-white lead">Get Early Access</a> &amp;
+                        <a href="/login" class="text-white lead">Get Early Access</a> &amp;
                         <a href="/Services" class="text-white lead">OUR Services</a> &amp;
                         <a href="/Sub" class="text-blue-500 lead">OUR Subscription</a> &amp;
 

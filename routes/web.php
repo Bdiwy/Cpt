@@ -3,7 +3,10 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BackController;
+use App\Http\Controllers\CrudController;
 use App\Http\Controllers\HomeController;
+use Illuminate\Auth\Events\Login;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,3 +28,25 @@ Route::get('/Sub',[BackController::class,'sub']);
 Auth::routes(['verify'=>true]);
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('verified');
 
+
+
+Route::get('/test',[CrudController::class,'get']);
+
+
+
+Route::get('/login',[BackController::class,'login'])->name('login');
+
+
+
+Route::get('/Signup',[BackController::class,'Signup'])->name('Signup');
+
+
+
+
+
+Route::post('/store',[CrudController::class,'store'])->name('store');
+
+
+
+
+Route::post('/pass',[CrudController::class,'pass'])->name('pass');

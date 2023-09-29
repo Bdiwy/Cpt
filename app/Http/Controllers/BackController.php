@@ -25,6 +25,18 @@ class BackController extends Controller
 
     }
 
+    public function login(){
+
+        return response(view('pages.login'));
+
+    }
+
+
+    public function Signup(){
+
+        return response(view('pages.Signup'));
+
+    }
 
 
 

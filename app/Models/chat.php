@@ -8,13 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class chat extends Model
 {
     use HasFactory;
-    protected $table = 'chats';
+    protected $table = 'users';
 
 
     protected $fillable=['user_id','situation','created_at','updated_at'];
 
 
-    protected $hiden=['created_at','updated_at'];
-    
-    
+    protected $hidden=[
+        'created_at',
+        'updated_at'
+    ];    
+
+
+
+
 }
