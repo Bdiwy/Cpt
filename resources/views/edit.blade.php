@@ -61,9 +61,9 @@
 </b>
 </div>
 @endif
-                <h2>Sign up</h2>
+                <h2>User Update id = {{$data->id}}</h2>
 
-                <form action="{{url('store')}}" method="POST">
+                <form action="/update/{{$data->id}}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form">
 
@@ -71,7 +71,7 @@
                         @error('name')
                         <p class="alert alert-danger">{{$message}}</p>
                         @enderror
-                        <input type="text" name='name' value="{{old('name')}}" required> <i>name</i>
+                        <input type="text" name='name' value="{{$data->name}}" required> <i>name</i>
 
                     </div>
 
@@ -79,7 +79,7 @@
                         @error('email')
                         <p class="alert alert-danger">{{$message}}</p>
                         @enderror
-                        <input type="email" name='email'  value="{{old('email')}}" required> <i>Email</i>
+                        <input type="email" name='email'  value="{{$data->email}}" required> <i>Email</i>
 
                     </div>
 
@@ -88,11 +88,7 @@
                         <p class="alert alert-danger">{{$message}}</p>
                         @enderror
 
-                        <input type="password" name='password'  value="{{old('username')}}" required> <i>Password</i>
-
-                    </div>
-
-                    <div class="links "><i> Already Have one !? </i><a href="/login">Login</a>
+                        <input type="password" name='password'  value="{{$data->password}}" required> <i>Password</i>
 
                     </div>
                     <div class="inputBox">
@@ -100,14 +96,13 @@
                         <p class="alert alert-danger">{{$message}}</p>
                         @enderror
 
-                        <input type="file" name='photo'  value="{{old('photo')}}" required> <i>photo</i>
+                        <input type="file" name='photo'  value=" " required> <i>photo</i>
 
                     </div>
 
-
                     <div class="inputBox">
 
-                        <input type="submit" value="Sign up">
+                        <input type="submit" value="Update">
 
                     </div>
 

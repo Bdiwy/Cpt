@@ -2,7 +2,14 @@
 
 
 @section('master')
-
+                
+@if(session()->has('message'))
+<div class='links' >
+<b>
+    {{session('message')}}
+</b>
+</div>
+@endif
 
 
 
