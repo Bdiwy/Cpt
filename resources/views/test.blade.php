@@ -19,6 +19,7 @@
             <th scope="col">PASSWORD</th>
             <th scope="col">UPDATE</th>
             <th scope="col">DELETE</th>
+            <th scope="col"><a href="" type="button" class="btn btn-danger">DELETE-ALL</a></th>
           </tr>
         </thead>
         <tbody>
@@ -31,6 +32,8 @@
             <td>{{$i->password}}</td>
             <td><a href="/edit/{{$i->id}}" type="button" class="btn btn-success">UPDATE</a></td>
             <td><a href="/delete/{{$i->id}}" type="button" class="btn btn-danger">DELETE</a></td>
+            <td><input type="checkbox" name="checkk"></td>
+            
           </tr>
           @endforeach
         </tbody>

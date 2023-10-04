@@ -62,8 +62,9 @@
 </div>
 @endif
                 <h2>Sign up</h2>
+                {{-- <form action="{{url('store')}}" method="post" enctype="multipart/form-data"> --}}
 
-                <form action="{{url('store')}}" method="POST">
+                <form action="{{url('store')}}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form">
 
@@ -92,9 +93,6 @@
 
                     </div>
 
-                    <div class="links "><i> Already Have one !? </i><a href="/login">Login</a>
-
-                    </div>
                     <div class="inputBox">
                         @error('photo')
                         <p class="alert alert-danger">{{$message}}</p>
@@ -110,7 +108,9 @@
                         <input type="submit" value="Sign up">
 
                     </div>
+                    <div class="links "><i> Already Have one !? </i><a href="/login">Login</a>
 
+                    </div>
                 </div>
 
             </form>

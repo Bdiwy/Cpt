@@ -27,16 +27,16 @@ public function get(){
 public function edit(Request $request){
     $Userid= $request->id ;
 
-//    Select all table with elecount and query builder
+//    specific select table with elecount and query builder
 
-//  $gettingData= User::select('id','name','email','password')->find($Userid);//   elecount Select all code
+//  $gettingData= User::select('id','name','email','password')->find($Userid);//   elecount specific select code
 
-$gettingData=DB::table('users')->where('id',$Userid)->first();   //                 QueryBuilder Select all code
+$gettingData=DB::table('users')->where('id',$Userid)->first();   //                 QueryBuilder specific select code
     return view('edit',['data'=>$gettingData]);
 
 }
 
-public function update (Request $request)
+public function update (Request $request )
 {
     $form = $request->validate([
         'name' => ['required','min:3', 'max:100',Rule::unique('users', 'name')],
@@ -47,8 +47,13 @@ $userId= $request->id;
 if(!$userId){
     return redirect()->back();	
 }
-$find= User::find($userId);
-$find -> update($request->all());
+
+//    update table with elecount and query builder
+
+// $find= User::find($userId);//   elecount update code
+//$find -> update($request->all());
+
+DB::table('users')->where('id',$userId)->update($form);   //     QueryBuilder update code
 return redirect("/edit/$userId")->with('message','success update');	
 
 }
@@ -57,14 +62,26 @@ return redirect("/edit/$userId")->with('message','success update');
 
 public function delete(Request $request){
     $userId= $request->id;
-    $find= User::find($userId);
+
+
+//    specific delete table with elecount and query builder
+
+/*    //   elecount delete code
+$find= User::find($userId);
     if($find)
     {$find -> delete();
         return redirect('/test');
     }else{
     return redirect('/test');
-}
-}
+
+*/  
+
+    DB::table("users")->where('id',$userId)->delete();//                 QueryBuilder Delete code     
+    // DB::table("users")->truncate();//                 QueryBuilder delete all and resset the id's table to 0      
+    return redirect('/test');
+    
+    }
+
 
 
 // protected   function getMessages(){
@@ -93,31 +110,38 @@ public function delete(Request $request){
 
 public function store(Request $request){
 
-
-    
-    $file = $request->file('photo');
-    $file_ex ='png';
-    $filename = time().rand(1,99).'.'.$file_ex;
-    $path ='images/users';
-
-    // $file->move(public_path($path),$filename);
+   
 
     $form = $request->validate([
         // 'photo' =>'required',
         'name' => ['required','min:3', 'max:100',Rule::unique('users', 'name')],
         'email' => ['required', 'email',Rule::unique('users', 'email')],
         'password' => ['required', 'min:8', 'max:100'],
+        // 'photo' => ['nullable','image','mimes:jpeg,jpg,png,gif'],
     ]);
 
     //    insert into database with elecount and query builder
 
-    // User::create($form);   //                           elecount insert code
-    DB::table('users')->insert($form);  //                 QueryBuilder insert code
+    User::create([
+    'name' => $request->name,
+    'email' => $request->email,
+    'password' =>$request->password,
+    'photo' =>  $this->save_photo($request->photo,'images/users') , ]);   //                           elecount insert code
+    // DB::table('users')->insert([
+    //     'photo' => $filename ,  
+    // ]);  //                 QueryBuilder insert code
 
     return redirect('/Signup')->with('message', 'Registerd successfully!');
 
 } 
 
 
+protected function save_photo($photo,$path) {
 
+    $file = $photo;
+    $file_ex =$file->getClientOriginalExtension();
+    $filename = time().rand(1,99).'.'.$file_ex;
+    $file->move(public_path($path),$filename);
+    return $filename;
+}
 }

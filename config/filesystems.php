@@ -45,8 +45,8 @@ return [
         ],
         'users' => [
             'driver' => 'local',
-            'root' => storage_path('app/public/images/users'),
-            'url' => env('APP_URL').'/storage',
+            'root' => base_path().'/public/images/users',
+            'url' => env('APP_URL').'/public',
             'visibility' => 'public',
             'throw' => false,
         ],
