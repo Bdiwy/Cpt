@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\VedioViewer;
 use App\Models\chat;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -143,5 +144,27 @@ protected function save_photo($photo,$path) {
     $filename = time().rand(1,99).'.'.$file_ex;
     $file->move(public_path($path),$filename);
     return $filename;
+}
+
+
+public function createdata(Request $request) {
+
+
+    
+    // $form = $request->validate([
+    //     // 'photo' =>'required',
+    //     'name' => ['required','min:3', 'max:100',Rule::unique('users', 'name')],
+    //     'email' => ['required', 'email',Rule::unique('users', 'email')],
+    //     'password' => ['required', 'min:8', 'max:100'],
+    //     // 'photo' => ['nullable','image','mimes:jpeg,jpg,png,gif'],
+    // ]);
+
+    User::create([
+    'name' => $request->name,
+    'email' => $request->email,
+    'password' =>$request->password,
+    'photo' =>  $this->save_photo($request->photo,'images/users') ,
+ ]);
+
 }
 }

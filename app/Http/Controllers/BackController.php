@@ -1,8 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\chat;
 
+use App\Events\VedioViewer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\CrudController;
 
 class BackController extends Controller
 {
@@ -38,6 +42,14 @@ class BackController extends Controller
 
     }
 
+    public function vedio(){
+        $num=chat::first(); 
+        event(new VedioViewer($num));   
+        return response(view('youtube',['num'=>$num]));
 
+    }
+public function crud (){
+    return response(view('crud'));
+}
 
 }

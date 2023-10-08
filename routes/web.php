@@ -48,8 +48,11 @@ Route::get('/Signup',[BackController::class,'Signup'])->name('Signup');
 
 
 
+Route::get('/vedio',[BackController::class,'vedio'])->name('vedio');
 
 
 Route::post('/store',[CrudController::class,'store'])->name('store');
 
+Route::get('/crud',[BackController::class,'crud'])->name('crud');
 
+Route::post('/createdata',[CrudController::class,'createdata'])->name('createdata');
