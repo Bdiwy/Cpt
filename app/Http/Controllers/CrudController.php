@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\VedioViewer;
 use App\Models\chat;
 use App\Models\User;
+use App\Models\UserR;
+use App\Events\VedioViewer;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use App\Http\Controllers\Controller;
+use App\Http\Requests\FormValReq;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class CrudController extends Controller
 {
@@ -20,8 +22,8 @@ public function get(){
 
 //    $data= User::get();//                           elecount Select all code
 
-    $data=DB::table('users')->get();  //                 QueryBuilder Select all code
-
+//    $data=UserR::Test()->get();  //                 QueryBuilder with scope condition to select specific columns
+    $data=UserR::get(); //                 QueryBuilder Select all code
     return view('test',['data'=>$data]);
 } 
 
@@ -37,13 +39,9 @@ $gettingData=DB::table('users')->where('id',$Userid)->first();   //             
 
 }
 
-public function update (Request $request )
+public function update (FormValReq $request )
 {
-    $form = $request->validate([
-        'name' => ['required','min:3', 'max:100',Rule::unique('users', 'name')],
-        'email' => ['required', 'email',Rule::unique('users', 'email')],
-        'password' => ['required', 'min:8', 'max:100'],
-    ]);
+
 $userId= $request->id;
 if(!$userId){
     return redirect()->back();	
@@ -54,7 +52,7 @@ if(!$userId){
 // $find= User::find($userId);//   elecount update code
 //$find -> update($request->all());
 
-DB::table('users')->where('id',$userId)->update($form);   //     QueryBuilder update code
+DB::table('users')->where('id',$userId)->update($request->all());   //     QueryBuilder update code
 return redirect("/edit/$userId")->with('message','success update');	
 
 }
@@ -67,62 +65,39 @@ public function delete(Request $request){
 
 //    specific delete table with elecount and query builder
 
-/*    //   elecount delete code
-$find= User::find($userId);
-    if($find)
+    //   elecount delete code
+$find= UserR::find($userId);
+if($find)
     {$find -> delete();
         return redirect('/test');
     }else{
     return redirect('/test');
 
-*/  
-
-    DB::table("users")->where('id',$userId)->delete();//                 QueryBuilder Delete code     
-    // DB::table("users")->truncate();//                 QueryBuilder delete all and resset the id's table to 0      
-    return redirect('/test');
-    
     }
 
+    //DB::table("user_r_s")->where('id',$userId)->delete();//                 QueryBuilder Delete code     
+    // DB::table("users")->truncate();//                 QueryBuilder delete all and resset the id's table to 0      
+    
+    }
+    public function destroyy(Request $request){
+        $userId= $request->id;
+        DB::table("user_r_s")->where('id',$userId)->delete();//                 QueryBuilder Delete code     
+        // DB::table("users")->truncate();//                 QueryBuilder delete all and resset the id's table to 0      
+        return redirect()->back();    
+    }
+    
 
 
-// protected   function getMessages(){
-//     return [
-//         'name.required'=> trans("messages.username"),
-//         'name.min:3'=> trans("messages.usernameMin"),
-//         'name.max:100'=> trans("messages.usernameMin"),
-//         'name.unique'=> trans("messages.usernameUnique"),
-//         'email.required'=> trans("messages.email"),
-//         'email.email'=> trans("messages.email"),
-//         'password.required'=> trans("messages.password"),
-//         'password.min:8'=> trans("messages.passwordMINmax"),
-//         'password.max:100'=> trans("messages.passwordMINmax"),
-// ];
-// }
+
+public function restor($id){
+    UserR::onlyTrashed()->where("id",$id)->restore();
+    return redirect()->back();
+}
 
 
-// // $v = validator::make($request->all(),$rul, $messages);
-// protected function getRuls(){
-//     return[
-//         'name' => ['required','min:3', 'max:100',Rule::unique('users', 'name')],
-//         'email' => ['required', 'email',Rule::unique('users', 'email')],
-//         'password' => ['required', 'min:8', 'max:100'],
-//     ];
-// }
 
-public function store(Request $request){
-
-   
-
-    $form = $request->validate([
-        // 'photo' =>'required',
-        'name' => ['required','min:3', 'max:100',Rule::unique('users', 'name')],
-        'email' => ['required', 'email',Rule::unique('users', 'email')],
-        'password' => ['required', 'min:8', 'max:100'],
-        // 'photo' => ['nullable','image','mimes:jpeg,jpg,png,gif'],
-    ]);
-
+public function store(FormValReq $request){
     //    insert into database with elecount and query builder
-
     User::create([
     'name' => $request->name,
     'email' => $request->email,
@@ -133,6 +108,16 @@ public function store(Request $request){
     // ]);  //                 QueryBuilder insert code
 
     return redirect('/Signup')->with('message', 'Registerd successfully!');
+} 
+
+public function save(FormValReq $request){
+
+    UserR::create([
+    'name' => $request->name,
+    'email' => $request->email,
+    'password' =>$request->password,
+    'photo' =>  $this->save_photo($request->photo,'images/users') , ]);  
+    return redirect('/reg')->with('message','Done!');
 
 } 
 
@@ -147,24 +132,14 @@ protected function save_photo($photo,$path) {
 }
 
 
-public function createdata(Request $request) {
-
-
-    
-    // $form = $request->validate([
-    //     // 'photo' =>'required',
-    //     'name' => ['required','min:3', 'max:100',Rule::unique('users', 'name')],
-    //     'email' => ['required', 'email',Rule::unique('users', 'email')],
-    //     'password' => ['required', 'min:8', 'max:100'],
-    //     // 'photo' => ['nullable','image','mimes:jpeg,jpg,png,gif'],
-    // ]);
+public function createdata(FormValReq $request) {
 
     User::create([
     'name' => $request->name,
     'email' => $request->email,
     'password' =>$request->password,
-    'photo' =>  $this->save_photo($request->photo,'images/users') ,
- ]);
+    // 'photo' =>  $this->save_photo($request->photo,'images/users') ,
+]);
 
 }
 }

@@ -66,6 +66,7 @@
 
                 <form action="{{url('store')}}" method="POST" enctype="multipart/form-data">
                     @csrf
+                    
                     <div class="form">
 
                     <div class="inputBox">

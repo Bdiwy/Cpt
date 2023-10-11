@@ -39,6 +39,9 @@ Route::get('/edit/{id}',[CrudController::class,'edit']);
 Route::post('/update/{id}',[CrudController::class,'update']);
 
 Route::get('/delete/{id}',[CrudController::class,'delete']);
+Route::get('/destroyy/{id}',[CrudController::class,'destroyy']);
+
+Route::get('/restor/{id}',[CrudController::class,'restor']);
 
 Route::get('/login',[BackController::class,'login'])->name('login');
 
@@ -56,3 +59,10 @@ Route::post('/store',[CrudController::class,'store'])->name('store');
 Route::get('/crud',[BackController::class,'crud'])->name('crud');
 
 Route::post('/createdata',[CrudController::class,'createdata'])->name('createdata');
+
+Route::get('/reg',[BackController::class,'registeredata'])->name('registeredata');
+
+
+Route::post('/save',[CrudController::class,'save'])->name('save');
+
+Route::get('/log',[BackController::class,'log'])->name('log');

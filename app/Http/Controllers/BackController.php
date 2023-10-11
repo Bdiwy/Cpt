@@ -7,6 +7,7 @@ use App\Events\VedioViewer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\CrudController;
+use App\Models\UserR;
 
 class BackController extends Controller
 {
@@ -49,7 +50,20 @@ class BackController extends Controller
 
     }
 public function crud (){
-    return response(view('crud'));
+    $data=chat::get(); 
+    return response(view('crud',['data'=>$data]));
 }
 
+public function log(){
+
+
+    $data=UserR::onlyTrashed()->get(); 
+    return response(view('log',compact('data')));
+
+}
+
+
+public function registeredata(){
+    return view('reg');
+}
 }
